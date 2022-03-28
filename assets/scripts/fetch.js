@@ -52,7 +52,7 @@ async function addProject(project) {
   document.querySelector('#projecten').insertAdjacentHTML(
     'afterbegin',
     `<div class="project">
-      <div class="card" style="width: 18rem;">
+      <div class="card">
       <img class="card-img-top" src="${project.header_image[0]}" alt="Card image cap">
       
       <div class="card-body">
@@ -68,16 +68,26 @@ async function addProject(project) {
       </div>
 
       <div class="card-body">
-        <a href="#" class="btn btn-outline-secondary stretched-link">${project.title}</a>
+        <a href="/project.html?p=${project.slug}" class="btn btn-outline-secondary stretched-link">${project.title}</a>
       </div>
 
       <div class="card-footer text-muted">
         by ${project.author}
       </div>
 
+      <div class="row text-center text-lg-start">
+      
+      </div>
+
     </div>
     </div>`
   )
+
+
+
+
+
+
 
 
 }

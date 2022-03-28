@@ -1,3 +1,47 @@
 .badge{ background-color: grey !important; 
 margin: 2px;
 }
+
+.headimg{
+    max-height: 250px;
+}
+
+.project-title{
+    background-color: darkred;
+    color: #fff;
+    padding: 10px;
+}
+
+.project-tagline{
+    background-color: rgb(168, 11, 11);
+    color: #fff;
+    padding: 10px;
+}
+
+.project-tags{
+    background-color: #BDBDBD;
+    color: #fff;
+    padding: 10px;
+    
+}
+
+.project-author{
+    background-color: #616161;
+    color: #fff;
+    padding: 10px;
+    
+}
+
+.project-screenshots{
+    background-color: #424242;
+    color: #fff;
+    padding: 10px;
+}
+
+.project-description{
+    background-color: #EEEEEE;
+    color: #212121;
+    padding: 10px;
+    
+}
+
