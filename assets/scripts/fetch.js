@@ -7,7 +7,7 @@ async function f(url) {
 
 
 async function init() {
-  let projects = await f('https://cmgt.hr.nl/api/projects?page=1')
+  let projects = await f('https://cmgt.hr.nl/api/projects')
   for (const item of projects.data) {
     console.log(item.project);
     addProject(item.project)
