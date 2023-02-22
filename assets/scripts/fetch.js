@@ -9,7 +9,7 @@ async function f(url) {
 async function init() {
   let projects = await f('https://cmgt.hr.nl/api/projects')
   for (const item of projects.data) {
-    console.log(item.project);
+    // console.log(item.project);
     addProject(item.project)
   }
 }
@@ -53,7 +53,7 @@ async function addProject(project) {
     'afterbegin',
     `<div class="project">
       <div class="card">
-      <img class="card-img-top" src="${project.header_image[0]}" alt="Card image cap">
+      <img class="card-img-top" src="${project.header_image}" alt="Card image cap">
       
       <div class="card-body">
 
@@ -82,14 +82,6 @@ async function addProject(project) {
     </div>
     </div>`
   )
-
-
-
-
-
-
-
-
 }
 
 

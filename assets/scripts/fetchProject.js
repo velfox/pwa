@@ -14,7 +14,7 @@ async function init() {
   console.log('hoi')
   let project = await f(`https://cmgt.hr.nl/api/projects/${projectslug}`)
   project = project.project;
-  console.log(project)
+  // console.log(project)
   addProject(project)
 }
 
@@ -76,7 +76,7 @@ async function addProject(project) {
     `
     <section class="jumbotron text-center">
     <div class="container">
-    <img class="card-img-top headimg" src="${project.header_image[0]}" alt="Card image cap">
+    <img class="card-img-top headimg" src="${project.header_image}" alt="Card image cap">
     <div class="project-title">
     <h1 class="jumbotron-heading">${project.title}</h1>  
     </div>
