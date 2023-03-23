@@ -45,3 +45,9 @@ margin: 2px;
     
 }
 
+.tags{
+    text-align: center;
+}
+.tag{
+    margin: 4px;
+}

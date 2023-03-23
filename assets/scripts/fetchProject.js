@@ -18,29 +18,6 @@ async function init() {
   addProject(project)
 }
 
-
-
-// function addProjectTaggs (project) {
-//   var projecten = document.getElementById('projecten');
-//   const newProject = document.createElement('div')
-//   newProject.classList.add('project');
-
-//   // create a new div element
-//   const newDiv = document.createElement("div");
-//   newDiv.classList.add('project-title');
-//   // and give it some content
-//   const newContent = document.createTextNode(project.title);
-
-//   // add the text node to the newly created div
-//   newDiv.appendChild(newContent);
-
-//   // add the newly created element and its content into the DOM
-//   const currentDiv = document.getElementById("div1");
-//   document.body.insertBefore(newDiv, currentDiv);
-
-//   projecten.appendChild(newProject)
-// }
-
 init()
 
 async function addProject(project) {
@@ -116,9 +93,3 @@ async function addProject(project) {
 
 
 }
-
-
-
-
-
-

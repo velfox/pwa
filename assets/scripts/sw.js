@@ -1,5 +1,7 @@
 const staticCacheName = 'site-static-v1';
 const dynamicCacheName = 'site-dynamic-v1';
+const offlineUrl = '/mysite/offline';
+
 const assets = [
   '/',
   '/index.html',
@@ -8,7 +10,8 @@ const assets = [
   'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js',
   '/assets/scripts/app.js',
   '/assets/scripts/fetch.js',
-  '/assets/scripts/fetchProject.js'
+  '/assets/scripts/fetchProject.js',
+  '/assets/scripts/localforage.js'
 ];
 
 // cache size limit function
@@ -66,7 +69,14 @@ self.addEventListener('fetch', evt => {
       } 
     })
   );
+  if (evt.request.mode === 'tags') {
+    console.log('service worker found taggs reqeuest')
+    return evt.respondWith(
+      fetch(evt.request).catch(() => caches.match(offlineUrl))
+    );
+  }
 });
+
 
 
 
