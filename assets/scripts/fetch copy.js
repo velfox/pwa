@@ -75,28 +75,35 @@ function addProjectIndexDB(project){
     var key = project.slug;
     var value = project;
 
-    localforage.config({
+    //create or load project instance
+    var projects = localforage.createInstance({
       name: "projects",
       storeName: "projects"
+      
     });
-
     //add project to projects
-    localforage.setItem(key, value);
-
-    //create or load project instance
-    // var projects = localforage.createInstance({
-    //   name: "projects"
-    // });
+    projects.setItem(key, value);
   });  
 }
 
 function loadProjectsIndexDB(){
+
+//create or load project instance
+var projects = localforage.createInstance({
+  name: "projects"
+});
+
 // An array of all the key names.
-localforage.keys().then(function(keys, projects) {
+projects.keys().then(function(keys, projects) {
+
+  //create or load project instance
+  var projects = localforage.createInstance({
+    name: "projects"
+  });
     //loop trough all keynames.
     for (let i = 0; i < keys.length; i++) {
     //get projects from indexDB projects by key name  
-    localforage.getItem(keys[i]).then(function(value) {
+    projects.getItem(keys[i]).then(function(value) {
       //add projects to the website
       addProject(value)
     }).catch(function(err) {

@@ -1,28 +1,43 @@
-async function f(url) {
-  let data = []
-  const response = await fetch(url);
-  data = await response.json();
-  // addTags(data)
-  return data
+// async function f(url) {
+//   let data = []
+//   const response = await fetch(url);
+//   data = await response.json();
+//   return data
 
+// }
+
+// async function init() {
+//   let tags = await f('https://cmgt.hr.nl/api/tags')
+//   addTags(tags)
+// }
+
+// init()
+
+getTags()
+
+async function getTags() {
+  let url = 'https://cmgt.hr.nl/api/tags'
+  let tags = [];
+  
+  try {
+      let res = await fetch(url);
+      const { data } = await res.json();
+      tags = data;
+  } catch (err) {
+    addTagserror(err)
+  }
+  addTags(tags);
 }
 
-
-async function init() {
-  let tags = await f('https://cmgt.hr.nl/api/tags')
-  addTags(tags)
-}
-
-init()
 
 async function addTags(tags) {
-  console.log(tags)
+  console.log(tags);
   var taggs = ``
-  for (let i = 0; i < tags.data['length']; i++) {
-    var obj = tags.data;
+  for (let i = 0; i < tags['length']; i++) {
+    var obj = tags;
     var name = (obj['name']);
-    console.log(tags.data[i].name)
-    var taggs = taggs + `<button type="button" class="btn btn-outline-primary tag">${tags.data[i].name}</button>`
+    console.log(tags[i].name)
+    var taggs = taggs + `<button type="button" class="btn btn-outline-primary tag">${tags[i].name}</button>`
   }
 
   //add tagss to tags div
@@ -34,4 +49,34 @@ async function addTags(tags) {
   )
 }
 
+async function addTagserror(err) {
+  console.log(err);
+  //add tagss to tags div
+  document.getElementById("tags").innerHTML = "";
+  document.querySelector('#tags').insertAdjacentHTML(
+    'afterbegin',
+    `   
+    <div class="alert alert-danger" role="alert">
+      De aplicatie kan geen taggs laden zonder internet verbinding.
+  </div>
+    </div>`
+  )
+}
 
+window.addEventListener("offline", () => {
+  document.getElementById("tags").innerHTML = "";
+  document.querySelector('#tags').insertAdjacentHTML(
+    'afterbegin',
+    `   
+    <div class="alert alert-danger" role="alert">
+      De aplicatie kan geen taggs laden zonder internet verbinding.
+  </div>
+    </div>`
+  )
+})
+
+window.addEventListener("online", () => {
+  document.getElementById("tags").innerHTML = "";
+  console.log('getting tags')
+  getTags()
+})

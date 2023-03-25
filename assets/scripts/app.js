@@ -32,51 +32,12 @@ if ("serviceWorker" in navigator) {
     .catch((error) => {
       // Something went wrong during registration. The service-worker.js file
       // might be unavailable or contain a syntax error.
+      console.log(error);
     });
 } else {
   // The current browser doesn't support service workers.
   // Perhaps it is too old or we are not in a Secure Context.
 }
-
-// Feel free to change the drivers order :)
-localforage.setDriver([
-    localforage.INDEXEDDB,
-    localforage.WEBSQL,
-    localforage.LOCALSTORAGE
-    ]).then(function() {
-    var key = 'STORE_KEY';
-    // var value = 'What we save offline';
-    var value = 'hoi ik ben tim';
-    value[0] = 65
-    // var value = undefined;
-    var UNKNOWN_KEY = 'unknown_key';
-  
-    localforage.setItem(key, value, function() {
-      console.log('Using:' + localforage.driver());
-      console.log('Saved: ' + value);
-  
-      localforage.getItem(key).then(function(readValue) {
-        console.log('Read: ', readValue);
-      });
-  
-      // Since this key hasn't been set yet, we'll get a null value
-      localforage.getItem(UNKNOWN_KEY, function(err, readValue) {
-        console.log('Result of reading ' + UNKNOWN_KEY, readValue);
-      });
-    });
-  });
-  
-  // this is just for demonstration purposes
-  var originalConsoleLog = console.log;
-  function consoleLogProxy() {
-    originalConsoleLog.apply(console, arguments);
-    var htmlConsole = document.getElementById('htmlConsole');
-    if (htmlConsole) {
-      var message = Array.prototype.slice.apply(arguments, []).join(' ');
-      htmlConsole.innerHTML += '<li>' + message + '</li>';
-    }
-  }
-  console.log = consoleLogProxy;
  
   window.addEventListener("offline", () => {
     document.getElementById("status").innerHTML = "";
@@ -86,8 +47,16 @@ localforage.setDriver([
       De aplicatie heeft geen internet verbinding!
     </div>`
     )
+    document.getElementById("tags").innerHTML = "";
+    document.querySelector('#tags').insertAdjacentHTML(
+      'afterbegin',
+      `   
+      <div class="alert alert-danger" role="alert">
+        De aplicatie kan geen taggs laden zonder internet verbinding.
+    </div>
+      </div>`
+    )
   })
-
 
 window.addEventListener("online", () => {
   document.getElementById("status").innerHTML = "";
@@ -97,4 +66,20 @@ window.addEventListener("online", () => {
     Inernet is weer beschikbaar!
   </div>`
   )
+  // fadeOutEffect();
 })
+
+
+// function fadeOutEffect() {
+//   var fadeTarget = document.getElementById('status');
+//   var fadeEffect = setInterval(function () {
+//       if (!fadeTarget.style.opacity) {
+//           fadeTarget.style.opacity = 1;
+//       }
+//       if (fadeTarget.style.opacity > 0) {
+//           fadeTarget.style.opacity -= 0.1;
+//       } else {
+//           clearInterval(fadeEffect);
+//       }
+//   }, 500);
+// }

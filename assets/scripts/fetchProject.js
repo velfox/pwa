@@ -47,45 +47,36 @@ async function addProject(project) {
   }
 
 
-  //add project info to card, place card in prjojecten div
+  //add project info to card, place card in projecten div
   document.querySelector('#project').insertAdjacentHTML(
     'afterbegin',
     `
     <section class="jumbotron text-center">
-    <div class="container">
-    <img class="card-img-top headimg" src="${project.header_image}" alt="Card image cap">
-    <div class="project-title">
-    <h1 class="jumbotron-heading">${project.title}</h1>  
-    </div>
-    <div class="project-tagline">
-      <h3 class="">${project.tagline}</h3>
-    </div>
-    <div class="project-tags">
-      <div id="tags">
-      ${taggs}
+      <div class="container">
+          <img class="card-img-top headimg" src="${project.header_image}" alt="Card image cap">
+          <div class="project-title">
+            <h1 class="jumbotron-heading">${project.title}</h1>  
+          </div>
+          <div class="project-tagline">
+            <h3 class="">${project.tagline}</h3>
+          </div>
+          <div class="project-tags">
+            <div id="tags">
+              ${taggs}
+            </div>
+          </div>
+          <div class="project-description">
+            <p>${project.description}</p>
+          </div>
+          <div class="project-author">
+            <p> by: ${project.author}</p>
+          </div>
+          <div class="project-screenshots">
+            ${screenshots}
+          </div>
       </div>
-    </div>
-    <div class="project-description">
-      <p>${project.description}</p>
-    </div>
-    <div class="project-author">
-    <p> by: ${project.author}</p>
-  </div>
-  <div class="project-screenshots">
-
-  ${screenshots}
-</div>
-
-
-
-
-  </div>
-    </div>
-
-  </section>
-
-
-
+      </div>
+    </section>
 
     </div>
     </div>`
