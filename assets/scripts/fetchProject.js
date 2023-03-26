@@ -1,50 +1,29 @@
-async function f(url) {
-  let data = []
-  const response = await fetch(url);
-  data = await response.json();
-  return data
-}
-
-
-async function init() {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const projectslug = urlParams.get('p')
-  console.log(projectslug);
-  console.log('hoi')
-  let project = await f(`https://cmgt.hr.nl/api/projects/${projectslug}`)
-  project = project.project;
-  // console.log(project)
-  addProject(project)
-}
-
-
 async function getProject() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const projectslug = urlParams.get('p')
-  console.log(projectslug);
-  console.log('hoi');
   let url = `https://cmgt.hr.nl/api/projects/${projectslug}`
   let project = [];
   
   try {
       let res = await fetch(url);
-      project = await res.json();
-      project = project.project;
-      console.log(project)
+      if (res.status === 200) {
+        console.log('test status code 200');
+        project = await res.json();
+        project = project.project;
+        console.log(project)
+        addProject(project)
+      } 
   } catch (err) {
     console.log(err);
     addProjectError(err)
   }
-  console.log(project)
-  addProject(project)
 }
 
-getProject()
+
 
 async function addProject(project) {
-
+  console.log('project aan het plaatsen')
   var taggs = ``
 
   // add tagss to var
@@ -118,3 +97,12 @@ async function addProjectError() {
     </div>`
   )
 }
+
+window.addEventListener("online", () => {
+  document.getElementById("project").innerHTML = "";
+  console.log('onlinge fetching project')
+  getProject()
+})
+
+
+getProject()

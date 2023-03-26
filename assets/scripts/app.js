@@ -1,10 +1,3 @@
-console.log('loading the serviceworker loader')
-// if('serviceWorker' in navigator){
-//     navigator.serviceWorker.register('/sw.js')
-//         .then((reg) => console.log('Service worker registerd', reg))
-//         .catch((err) => console.log('Service worker not registerd', err))
-// } 
-
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/sw.js", {
@@ -66,20 +59,6 @@ window.addEventListener("online", () => {
     Inernet is weer beschikbaar!
   </div>`
   )
-  // fadeOutEffect();
 })
 
 
-// function fadeOutEffect() {
-//   var fadeTarget = document.getElementById('status');
-//   var fadeEffect = setInterval(function () {
-//       if (!fadeTarget.style.opacity) {
-//           fadeTarget.style.opacity = 1;
-//       }
-//       if (fadeTarget.style.opacity > 0) {
-//           fadeTarget.style.opacity -= 0.1;
-//       } else {
-//           clearInterval(fadeEffect);
-//       }
-//   }, 500);
-// }

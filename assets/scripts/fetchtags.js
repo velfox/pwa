@@ -1,20 +1,3 @@
-// async function f(url) {
-//   let data = []
-//   const response = await fetch(url);
-//   data = await response.json();
-//   return data
-
-// }
-
-// async function init() {
-//   let tags = await f('https://cmgt.hr.nl/api/tags')
-//   addTags(tags)
-// }
-
-// init()
-
-getTags()
-
 async function getTags() {
   let url = 'https://cmgt.hr.nl/api/tags'
   let tags = [];
@@ -28,6 +11,8 @@ async function getTags() {
   }
   addTags(tags);
 }
+
+getTags()
 
 
 async function addTags(tags) {

@@ -1,22 +1,23 @@
-async function f(url) {
-  let data = []
-  const response = await fetch(url);
-  data = await response.json();
-  return data
-}
-
-
-async function init() {
-  let projects = await f('https://cmgt.hr.nl/api/projects')
-  for (const item of projects.data) {
-    // console.log(item.project);
-    // addProject(item.project)
-    addProjectIndexDB(item.project)
+async function getProjects() {
+  let url = 'https://cmgt.hr.nl/api/projects'
+  let projects = [];
+  
+  try {
+      let response = await fetch(url);
+      if (response.status === 200) {
+      console.log('test status code 200');
+      projects = await response.json();
+      for (const item of projects.data) {
+        addProject(item.project)
+        addProjectIndexDB(item.project)
+      }
+    }
+  } catch (err) {
+    loadProjectsIndexDB() 
   }
-  loadProjectsIndexDB()
 }
 
-init()
+getProjects()
 
 async function addProject(project) {
   var taggs = ``
@@ -111,3 +112,9 @@ localforage.keys().then(function(keys, projects) {
 });
 
 }
+
+window.addEventListener("online", () => {
+  document.getElementById("projecten").innerHTML = "";
+  console.log('fetching projecten')
+  init()
+})
