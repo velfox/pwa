@@ -116,5 +116,5 @@ localforage.keys().then(function(keys, projects) {
 window.addEventListener("online", () => {
   document.getElementById("projecten").innerHTML = "";
   console.log('fetching projecten')
-  init()
+  getProjects()
 })
