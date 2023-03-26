@@ -47,13 +47,43 @@ self.addEventListener('activate', evt => {
   );
 });
 
-// // fetch event
+// // // fetch event
+// self.addEventListener('fetch', evt => {
+//   // console.log('fetch event', evt);
+//   evt.respondWith(
+//     caches.match(evt.request).then(cacheRes => {
+//       return cacheRes || fetch(evt.request).then(fetchRes => {
+//         return caches.open(dynamicCacheName).then(cache => {
+//           cache.put(evt.request.url, fetchRes.clone());
+//           // check cached items size
+//           limitCacheSize(dynamicCacheName, 400);
+//           return fetchRes;
+//         })
+//       });
+//     }).catch(() => {
+//       if(evt.request.url.indexOf('.html') > -1){
+//         return caches.match('/pages/fallback.html');
+//       } 
+//     })
+//   );
+// });
+
+
+// fetch event
 self.addEventListener('fetch', evt => {
-  // console.log('fetch event', evt);
+  console.log('fetch event', evt);
+  //fix crome exstention error
+  if (!(evt.request.url.indexOf('http') === 0)) return;
+  console.log(evt.request.url);
+  // no fetching of tags! foei
+  if ((evt.request.url.indexOf('/api/tags') === 18)) return;
+  // no fetching of tags! projects
+  if ((evt.request.url.indexOf('/api/projects') === 18)) return;
   evt.respondWith(
     caches.match(evt.request).then(cacheRes => {
       return cacheRes || fetch(evt.request).then(fetchRes => {
         return caches.open(dynamicCacheName).then(cache => {
+       
           cache.put(evt.request.url, fetchRes.clone());
           // check cached items size
           limitCacheSize(dynamicCacheName, 400);
@@ -61,9 +91,17 @@ self.addEventListener('fetch', evt => {
         })
       });
     }).catch(() => {
+      console.log(evt.request + "kon niet worden gevonden in de cache en niet worden gefetcht")
       if(evt.request.url.indexOf('.html') > -1){
         return caches.match('/pages/fallback.html');
       } 
     })
   );
+
+  if (evt.request.mode === 'tags') {
+    console.log('service worker found taggs reqeuest')
+    return evt.respondWith(
+      fetch(evt.request).catch(() => caches.match(offlineUrl))
+    );
+  }
 });

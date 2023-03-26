@@ -18,7 +18,30 @@ async function init() {
   addProject(project)
 }
 
-init()
+
+async function getProject() {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const projectslug = urlParams.get('p')
+  console.log(projectslug);
+  console.log('hoi');
+  let url = `https://cmgt.hr.nl/api/projects/${projectslug}`
+  let project = [];
+  
+  try {
+      let res = await fetch(url);
+      project = await res.json();
+      project = project.project;
+      console.log(project)
+  } catch (err) {
+    console.log(err);
+    addProjectError(err)
+  }
+  console.log(project)
+  addProject(project)
+}
+
+getProject()
 
 async function addProject(project) {
 
@@ -81,6 +104,17 @@ async function addProject(project) {
     </div>
     </div>`
   )
+}
 
-
+async function addProjectError() {
+  //add tagss to tags div
+  document.getElementById("project").innerHTML = "";
+  document.querySelector('#project').insertAdjacentHTML(
+    'afterbegin',
+    `   
+    <div class="alert alert-danger" role="alert">
+      De aplicatie kan dit project niet vinden in de cache en geen project laden zonder internet verbinding.
+  </div>
+    </div>`
+  )
 }
