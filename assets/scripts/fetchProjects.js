@@ -17,8 +17,6 @@ async function getProjects() {
   }
 }
 
-getProjects()
-
 async function addProject(project) {
   var taggs = ``
 
@@ -93,12 +91,13 @@ function addProjectIndexDB(project){
 
 function loadProjectsIndexDB(){
 // An array of all the key names.
-localforage.keys().then(function(keys, projects) {
+localforage.keys().then(function(keys) {
     //loop trough all keynames.
     for (let i = 0; i < keys.length; i++) {
     //get projects from indexDB projects by key name  
     localforage.getItem(keys[i]).then(function(value) {
       //add projects to the website
+      console.log('hoi2')
       addProject(value)
     }).catch(function(err) {
       // This code runs if there were any errors
@@ -118,3 +117,10 @@ window.addEventListener("online", () => {
   console.log('fetching projecten')
   getProjects()
 })
+
+if(!navigator.onLine){
+  loadProjectsIndexDB()
+  console.log('offline loading from indexDB') 
+} else {
+  getProjects()
+}

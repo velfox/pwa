@@ -12,7 +12,7 @@ async function getTags() {
   addTags(tags);
 }
 
-getTags()
+// getTags()
 
 
 async function addTags(tags) {
@@ -65,3 +65,10 @@ window.addEventListener("online", () => {
   console.log('getting tags')
   getTags()
 })
+
+if(!navigator.onLine){
+  addTagserror('tags are offline')
+  console.log('offline tags') 
+} else {
+  getTags()
+}
