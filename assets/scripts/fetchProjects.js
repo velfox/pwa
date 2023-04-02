@@ -1,5 +1,5 @@
 async function getProjects() {
-  let url = 'https://cmgt.hr.nl/api/projects'
+  let url = 'https://cmgt.hr.nl/api/projects/'
   let projects = [];
   
   try {
@@ -9,12 +9,13 @@ async function getProjects() {
       projects = await response.json();
       for (const item of projects.data) {
         addProject(item.project)
-        addProjectIndexDB(item.project)
+        // addProjectIndexDB(item.project)
       }
     }
   } catch (err) {
-    loadProjectsIndexDB() 
+    // loadProjectsIndexDB() 
   }
+  // loadProjectsIndexDB() 
 }
 
 async function addProject(project) {
@@ -97,7 +98,6 @@ localforage.keys().then(function(keys) {
     //get projects from indexDB projects by key name  
     localforage.getItem(keys[i]).then(function(value) {
       //add projects to the website
-      console.log('hoi2')
       addProject(value)
     }).catch(function(err) {
       // This code runs if there were any errors
@@ -118,9 +118,11 @@ window.addEventListener("online", () => {
   getProjects()
 })
 
-if(!navigator.onLine){
-  loadProjectsIndexDB()
-  console.log('offline loading from indexDB') 
-} else {
-  getProjects()
-}
+// if(!navigator.onLine){
+//   loadProjectsIndexDB()
+//   console.log('offline loading from indexDB') 
+// } else {
+//   getProjects()
+// }
+
+getProjects()

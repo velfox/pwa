@@ -1,5 +1,5 @@
 async function getTags() {
-  let url = 'https://cmgt.hr.nl/api/tags'
+  let url = 'https://cmgt.hr.nl/api/tags/'
   let tags = [];
   
   try {
