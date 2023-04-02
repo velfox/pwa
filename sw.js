@@ -94,6 +94,7 @@ function networkThenIndexedDb(request) {
   return fetch(request)
     .then((response) => {
       // clone response
+      console.log("verwerken van networkThenIndexedDb fetch");
       const response2 = response.clone();
       // response gebruiken voor opslag indexedDB
       addProjectIndexDB(response);
@@ -101,19 +102,20 @@ function networkThenIndexedDb(request) {
     })
     .catch(() => {
       // indexedDb
-      console.log("loading from index db");
+      console.log("offline loading from index db");
       return Promise.resolve(
         new Response(
           // wat je uit indexedDb haalt als object hier meegeven
-          JSON.stringify({
-            data: [
-              {
-                project: {
-                  title: "test",
-                },
-              },
-            ],
-          })
+          // JSON.stringify({
+          //   data: [
+          //     {
+          //       project: {
+          //         title: "test",
+          //       },
+          //     },
+          //   ],
+          // })
+          projectsFromIndexedDb()
         )
       );
     });
@@ -144,6 +146,7 @@ async function addProjectIndexDB(response) {
 
 function cacheThenNetworkWithLogging(evt) {
   if (!(evt.request.url.indexOf("http") === 0)) return;
+  if ((evt.request.url.indexOf('/api/projects') === 18)) return;
   evt.respondWith(
     caches
       .match(evt.request)
@@ -169,7 +172,55 @@ function cacheThenNetworkWithLogging(evt) {
   );
 }
 
-function LoadFromIndexDb(object) {}
+function projectsFromIndexedDb() {
+  
+  // An array of all the key names.
+  localforage
+    .keys()
+    .then(function (keys) {
+      //loop trough all keynames.
+      var data = [];
+      for (let i = 0; i < keys.length; i++) {
+        //get projects from indexDB projects by key name
+        localforage
+          .getItem(keys[i])
+          .then(function (value) {
+            data.push(value)
+          })
+          .catch(function (err) {
+            // This code runs if there were any errors
+            console.log(err);
+          });
+      }
+      console.log('done loading data from index db');
+      console.log(data);
+      return JSON.stringify(data);
+    })
+    .catch(function (err) {
+      // This code runs if there were any errors
+      console.log(err);
+    });
+}
+
+
+// An array of all the key names.
+localforage.keys().then(function(keys) {
+  //loop trough all keynames.
+  for (let i = 0; i < keys.length; i++) {
+  //get projects from indexDB projects by key name  
+  localforage.getItem(keys[i]).then(function(value) {
+    //add projects to the website
+    addProject(value)
+  }).catch(function(err) {
+    // This code runs if there were any errors
+    console.log(err);
+  });
+}
+
+}).catch(function(err) {
+// This code runs if there were any errors
+console.log(err);
+});
 
 // function addProjectIndexDB(project) {
 //   // console.log(project)
@@ -196,8 +247,6 @@ function LoadFromIndexDb(object) {}
 function projectFromIndexedDb() {
   console.log(evt);
   var p
-
-  return 
   // An array of all the key names.
   localforage
     .keys()

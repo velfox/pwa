@@ -4,6 +4,8 @@ async function getProjects() {
   
   try {
       let response = await fetch(url);
+      console.log('project fetch result');
+      console.log(response);
       if (response.status === 200) {
       console.log('test status code 200');
       projects = await response.json();
@@ -64,65 +66,10 @@ async function addProject(project) {
   )
 }
 
-function addProjectIndexDB(project){
-  // console.log(project)
-  localforage.setDriver([
-    localforage.INDEXEDDB,
-    localforage.WEBSQL,
-    localforage.LOCALSTORAGE
-    ]).then(function() {
-
-    var key = project.slug;
-    var value = project;
-
-    localforage.config({
-      name: "projects",
-      storeName: "projects"
-    });
-
-    //add project to projects
-    localforage.setItem(key, value);
-
-    //create or load project instance
-    // var projects = localforage.createInstance({
-    //   name: "projects"
-    // });
-  });  
-}
-
-function loadProjectsIndexDB(){
-// An array of all the key names.
-localforage.keys().then(function(keys) {
-    //loop trough all keynames.
-    for (let i = 0; i < keys.length; i++) {
-    //get projects from indexDB projects by key name  
-    localforage.getItem(keys[i]).then(function(value) {
-      //add projects to the website
-      addProject(value)
-    }).catch(function(err) {
-      // This code runs if there were any errors
-      console.log(err);
-    });
-  }
-
-}).catch(function(err) {
-  // This code runs if there were any errors
-  console.log(err);
-});
-
-}
-
 window.addEventListener("online", () => {
   document.getElementById("projecten").innerHTML = "";
   console.log('fetching projecten')
   getProjects()
 })
-
-// if(!navigator.onLine){
-//   loadProjectsIndexDB()
-//   console.log('offline loading from indexDB') 
-// } else {
-//   getProjects()
-// }
 
 getProjects()
