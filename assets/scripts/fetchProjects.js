@@ -5,10 +5,11 @@ async function getProjects() {
   try {
       let response = await fetch(url);
       console.log('project fetch result');
-      console.log(response);
+
       if (response.status === 200) {
       console.log('test status code 200');
       projects = await response.json();
+      console.log(projects);
       for (const item of projects.data) {
         addProject(item.project)
         // addProjectIndexDB(item.project)
@@ -16,7 +17,10 @@ async function getProjects() {
     }
   } catch (err) {
     // loadProjectsIndexDB() 
+    console.log('error fetch function')
+    console.log(err);
   }
+  console.log('exit fetch function')
   // loadProjectsIndexDB() 
 }
 

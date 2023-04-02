@@ -5,7 +5,6 @@ importScripts("/assets/scripts/localforage.js");
 
 const assets = [
   "/",
-  // '/index.html',
   "/assets/css/style.css",
   // 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
   // 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js',
@@ -106,15 +105,6 @@ function networkThenIndexedDb(request) {
       return Promise.resolve(
         new Response(
           // wat je uit indexedDb haalt als object hier meegeven
-          // JSON.stringify({
-          //   data: [
-          //     {
-          //       project: {
-          //         title: "test",
-          //       },
-          //     },
-          //   ],
-          // })
           projectsFromIndexedDb()
         )
       );
@@ -173,18 +163,31 @@ function cacheThenNetworkWithLogging(evt) {
 }
 
 function projectsFromIndexedDb() {
-  
+
+  localforage.setDriver([
+    localforage.INDEXEDDB,
+    localforage.WEBSQL,
+    localforage.LOCALSTORAGE
+    ]).then(function() {
+
+    localforage.config({
+      name: "projects",
+      storeName: "projects"
+    });
+  })
   // An array of all the key names.
   localforage
     .keys()
     .then(function (keys) {
       //loop trough all keynames.
-      var data = [];
+      var data = ['data'];
       for (let i = 0; i < keys.length; i++) {
         //get projects from indexDB projects by key name
         localforage
           .getItem(keys[i])
           .then(function (value) {
+            console.log('getting from index db');
+            console.log(value);
             data.push(value)
           })
           .catch(function (err) {
@@ -194,33 +197,14 @@ function projectsFromIndexedDb() {
       }
       console.log('done loading data from index db');
       console.log(data);
-      return JSON.stringify(data);
+      data = JSON.stringify(data)
+      return data;
     })
     .catch(function (err) {
       // This code runs if there were any errors
       console.log(err);
     });
 }
-
-
-// An array of all the key names.
-localforage.keys().then(function(keys) {
-  //loop trough all keynames.
-  for (let i = 0; i < keys.length; i++) {
-  //get projects from indexDB projects by key name  
-  localforage.getItem(keys[i]).then(function(value) {
-    //add projects to the website
-    addProject(value)
-  }).catch(function(err) {
-    // This code runs if there were any errors
-    console.log(err);
-  });
-}
-
-}).catch(function(err) {
-// This code runs if there were any errors
-console.log(err);
-});
 
 // function addProjectIndexDB(project) {
 //   // console.log(project)
