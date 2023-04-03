@@ -102,18 +102,25 @@ function networkThenIndexedDb(request) {
     .catch(() => {
       // indexedDb
       console.log("offline loading from index db");
-      return Promise.resolve(
-        new Response(
-          // wat je uit indexedDb haalt als object hier meegeven
-          projectsFromIndexedDb()
-        )
-      );
+      console.log(projectsFromIndexedDb());
+      return projectsFromIndexedDb()
+      .then(json => {
+        console.log(json);
+        let stringData = JSON.stringify(json)
+        return Promise.resolve(
+          new Response({
+            data: 
+            // wat je uit indexedDb haalt als object hier meegeven
+            stringData}
+          )
+        );
+      })
     });
 }
 
 async function addProjectIndexDB(response) {
   let json = await response.json();
-  console.log(json);
+  console.log("JSON: ",json);
   console.log("add projects to indexDB");
   for (const item of json.data) {
     console.log(item.project);
@@ -163,7 +170,7 @@ function cacheThenNetworkWithLogging(evt) {
 }
 
 function projectsFromIndexedDb() {
-
+console.log('hi?')
   localforage.setDriver([
     localforage.INDEXEDDB,
     localforage.WEBSQL,
@@ -176,34 +183,53 @@ function projectsFromIndexedDb() {
     });
   })
   // An array of all the key names.
-  localforage
-    .keys()
-    .then(function (keys) {
-      //loop trough all keynames.
-      var data = ['data'];
-      for (let i = 0; i < keys.length; i++) {
-        //get projects from indexDB projects by key name
-        localforage
-          .getItem(keys[i])
-          .then(function (value) {
-            console.log('getting from index db');
-            console.log(value);
-            data.push(value)
-          })
-          .catch(function (err) {
-            // This code runs if there were any errors
-            console.log(err);
-          });
-      }
-      console.log('done loading data from index db');
-      console.log(data);
-      data = JSON.stringify(data)
-      return data;
-    })
-    .catch(function (err) {
-      // This code runs if there were any errors
-      console.log(err);
-    });
+  return localforage.keys()
+  .then(keys => {
+    return Promise.all(keys.map(key => {
+      return localforage.getItem(key)
+      .then(value => {
+        console.log('localforage function test')
+        console.log(value);
+        return {"project": value}
+      })
+      .catch(e => {
+        console.log("Error in localforage.getItem ", e);
+      })
+    }))
+  })
+
+
+  // localforage
+  //   .keys()
+  //   .then(function (keys) {
+  //     //loop trough all keynames.
+  //     let data = new Array()
+  //     for (let i = 0; i < keys.length; i++) {
+  //       //get projects from indexDB projects by key name
+
+  //       localforage
+  //         .getItem(keys[i])
+  //         .then((value) => {
+  //           console.log('getting from index db');
+  //           console.log(value);
+  //           console.log(data);
+  //           console.log(typeof data);
+  //           data.push(value)
+  //         })
+  //         .catch(function (err) {
+  //           // This code runs if there were any errors
+  //           console.log(err);
+  //         });
+  //     }
+  //     console.log('done loading data from index db');
+  //     console.log(data);
+  //     return data;
+  //   })
+  //   .catch(function (err) {
+  //     // This code runs if there were any errors
+  //     console.log(err);
+  //   });
+    // data = JSON.stringify(data)
 }
 
 // function addProjectIndexDB(project) {
